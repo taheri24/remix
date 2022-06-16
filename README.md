@@ -4,11 +4,11 @@
 
 Comes with user authentication included
 
-- [React](https://github.com/facebook/react)
-- [Prisma](https://www.prisma.io)
+- [React] (https://github.com/facebook/react)
+- [Micro-ORM] (https://mikro-orm.io/)
 - Remix
 - TypeScript
-- Postgres
+- MySQL
 - Chakra UI
 - Customizable theme & Dark mode
 - Eslint
