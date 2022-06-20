@@ -1,7 +1,7 @@
 import * as React from "react"
 import { CgArrowLongDown, CgArrowLongUp } from "react-icons/cg"
 import * as c from "@chakra-ui/react"
-import { Prisma } from "@prisma/client"
+
 import { Link as RLink, useSearchParams } from "@remix-run/react"
 
 import { NoData } from "./NoData"
@@ -10,7 +10,7 @@ interface DataType {
   id: string
 }
 
-export type Sort = { orderBy: string; order: Prisma.SortOrder }
+export type Sort = { orderBy: string; order: 'desc' |'asc' }
 
 interface Props<T extends DataType> {
   children:
@@ -29,7 +29,7 @@ export function Table<T extends DataType>(props: Props<T>) {
 
   const [params, setParams] = useSearchParams()
   const orderBy = params.get("orderBy") as string | undefined
-  const order = params.get("order") as Prisma.SortOrder | undefined
+  const order = params.get("order")
 
   const handleSort = (order: Sort) => {
     const existingParams = Object.fromEntries(params)
@@ -76,7 +76,7 @@ export function Table<T extends DataType>(props: Props<T>) {
                   sortKey
                     ? handleSort({
                         orderBy: sortKey,
-                        order: order === Prisma.SortOrder.desc ? Prisma.SortOrder.asc : Prisma.SortOrder.desc,
+                        order: order === 'desc' ? 'asc' : 'desc',
                       })
                     : {}
                 }
@@ -84,9 +84,9 @@ export function Table<T extends DataType>(props: Props<T>) {
                 {header}
                 {orderBy && !!sortKey && orderBy === sortKey && (
                   <c.Center ml={2}>
-                    {order === Prisma.SortOrder.asc ? (
+                    {order === 'asc' ? (
                       <c.Box as={CgArrowLongUp} size="16px" m="-4px" />
-                    ) : order === Prisma.SortOrder.desc ? (
+                    ) : order === 'desc' ? (
                       <c.Box as={CgArrowLongDown} size="16px" m="-4px" />
                     ) : null}
                   </c.Center>

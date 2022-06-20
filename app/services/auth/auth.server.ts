@@ -1,16 +1,17 @@
+import { RequestContext } from "@mikro-orm/core"
 import type { Prisma, User } from "@prisma/client"
 import { createCookieSessionStorage, redirect } from "@remix-run/node"
+import { UserSchema } from "~/entities"
 
 import { IS_PRODUCTION } from "~/lib/config"
 import { SESSION_SECRET } from "~/lib/config.server"
-import { db } from "~/lib/db.server"
 import { createToken, decryptToken } from "~/lib/jwt"
 
 import { sendPasswordChangedEmail, sendResetPasswordEmail } from "../user/user.mailer.server"
 import { comparePasswords, hashPassword } from "./password.server"
-
 export async function login({ email, password }: { email: string; password: string }) {
-  const user = await db.user.findUnique({ where: { email } })
+  const em =RequestContext.getEntityManager();
+	const user = await em?.findOneOrFail(UserSchema,{   email   })
   if (!user) return { error: "Incorrect email or password" }
   const isCorrectPassword = await comparePasswords(password, user.password)
   if (!isCorrectPassword) return { error: "Incorrect email or password" }

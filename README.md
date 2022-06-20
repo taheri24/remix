@@ -1,6 +1,6 @@
 # Boilerplate Remix
 
-## Typescript + React + Remix + Prisma
+## Typescript + React + Remix + MikroORM
 
 Comes with user authentication included
 
@@ -16,12 +16,12 @@ Comes with user authentication included
 - Sendgrid SMTP
 - Husky
 - Lint staged
-
+- No Class(OOP) , No Headache
 & many more tasty treats
 
 ## Get Started
 
-**Must have node, yarn, postgres and redis installed and setup locally**
+**Must have node, yarn, mysql and redis installed and setup locally**
 
 1. `yarn install`
 2. `createdb boilerplate`

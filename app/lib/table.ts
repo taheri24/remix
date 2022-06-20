@@ -1,6 +1,5 @@
-import { Prisma } from "@prisma/client"
-
-export function getOrderByParams(request: Request, defaultOrder?: { [key: string]: Prisma.SortOrder }) {
+type SortOrder = 'desc'|'asc' | undefined;
+export function getOrderByParams(request: Request, defaultOrder?: { [key: string]:  SortOrder }) {
   const url = new URL(request.url)
   const orderBy = url.searchParams.get("orderBy") || undefined
   const order = url.searchParams.get("order") || undefined
@@ -41,13 +40,13 @@ export type TableParams = {
   skip?: number
   take?: number
   search?: string
-  orderBy?: { [key: string]: Prisma.SortOrder }
+  orderBy?: { [key: string]:  SortOrder }
 }
 
 export function getTableParams(
   request: Request,
   take?: number,
-  defaultOrder?: { [key: string]: Prisma.SortOrder },
+  defaultOrder?: { [key: string]:  SortOrder },
 ) {
   const pagination = getPaginationParams(request, take)
   const orderBy = getOrderByParams(request, defaultOrder)
