@@ -2,38 +2,24 @@ import * as c from "@chakra-ui/react"
 import { Prisma } from "@prisma/client"
 import { json, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import dayjs from "dayjs"
-
 import { LinkButton } from "~/components/LinkButton"
 import { Search } from "~/components/Search"
 import { Column, Table } from "~/components/Table"
 import { Tile } from "~/components/Tile"
+import { INote, NoteSchema } from "~/entities"
 import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { getTableParams, TableParams } from "~/lib/table"
 
 const getPosts = async ({ search, ...tableParams }: TableParams) => {
-  const posts = await db.post.findMany({
-    ...tableParams,
-    where: search
-      ? {
-          OR: [
-            { title: { contains: search, mode: Prisma.QueryMode.insensitive } },
-            { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
-            { author: { firstName: { contains: search, mode: Prisma.QueryMode.insensitive } } },
-            { author: { lastName: { contains: search, mode: Prisma.QueryMode.insensitive } } },
-          ],
-        }
-      : undefined,
-    select: {
-      id: true,
-      title: true,
-      author: { select: { id: true, avatar: true, firstName: true, lastName: true } },
-      createdAt: true,
-    },
-  })
-  const count = await db.post.count()
-  return { posts, count }
+const em=getEntityManager();
+  const [posts,count] = await em.findAndCount(NoteSchema,{
+
+
+
+  },{limit:tableParams.take,offset:tableParams.skip })
+
+  return { posts:posts as INote[], count }
 }
 
 const TAKE = 10
@@ -48,7 +34,7 @@ type Post = LoaderData["posts"][0]
 
 export default function Posts() {
   const ld = useLoaderData<LoaderData>();
- console.log('ld>>>',ld);
+
   const { posts, count }=ld;
   return (
     <c.Stack spacing={4}>
@@ -62,23 +48,14 @@ export default function Posts() {
       <Tile>
         <Table
           noDataText="No posts found"
-          data={posts}
+          data={posts as any}
           take={TAKE}
           getRowHref={(post) => post.id}
           count={count}
         >
-          <Column<Post> sortKey="title" header="Title" row={(post) => post.title} />
-          <Column<Post>
-            sortKey="author.firstName"
-            display={{ base: "none", md: "flex" }}
-            header="Author"
-            row={(post) => post.author.firstName + " " + post.author.lastName}
-          />
-          <Column<Post>
-            sortKey="createdAt"
-            header="Created"
-            row={(post) => dayjs(post.createdAt).format("DD/MM/YYYY")}
-          />
+          <Column  sortKey="title" header="Title" row={(post:INote) => post.title as any}  />
+
+
         </Table>
       </Tile>
     </c.Stack>

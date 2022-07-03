@@ -3,13 +3,10 @@ import { Avatar } from "@chakra-ui/react"
 import { MikroORM } from "@mikro-orm/core"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
-import dayjs from "dayjs"
 
 import { Tile, TileBody, TileFooter, TileHeader, TileHeading } from "~/components/Tile"
 import { INote, NoteSchema } from "~/entities"
 import { getEntityManager } from "~/lib/db.server"
-
-import { createImageUrl } from "~/lib/s3"
 
 interface ILoadedData{
 	posts:INote[]

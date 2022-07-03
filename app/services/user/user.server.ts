@@ -1,12 +1,16 @@
 import type { Prisma } from "@prisma/client"
+import { UserSchema } from "~/entities";
 
 import { getEntityManager } from "~/lib/db.server"
 
-export const updateUser = async (id: string, data: Prisma.UserUpdateInput) => {
+export const updateUser = async (_id: string, data: Prisma.UserUpdateInput) => {
+	const id=parseInt(_id);
+	const em=getEntityManager();
   if (data.email) {
-    const existing = await db.user.findFirst({ where: { email: { equals: data.email as string } } })
+    const existing = await em.findOne(   UserSchema, { email:   data.email as string  })
     if (existing) return { error: "User with these details already exists" }
   }
-  const user = await db.user.update({ where: { id }, data })
-  return { user }
+
+await em.nativeUpdate(UserSchema.name, id , data  as any );
+return em.findOneOrFail(UserSchema,id)
 }

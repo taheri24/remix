@@ -1,9 +1,10 @@
-import { User } from "@prisma/client"
 
+
+import { IUser } from "~/entities"
 import { FULL_WEB_URL } from "~/lib/config.server"
 import { mailer } from "~/lib/mailer.server"
 
-export async function sendResetPasswordEmail(user: User, token: string) {
+export async function sendResetPasswordEmail(user: IUser, token: string) {
   try {
     if (!user.email) return
     await mailer.send({
@@ -18,7 +19,7 @@ export async function sendResetPasswordEmail(user: User, token: string) {
   }
 }
 
-export async function sendPasswordChangedEmail(user: User) {
+export async function sendPasswordChangedEmail(user: IUser) {
   try {
     if (!user.email) return
     await mailer.send({

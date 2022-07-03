@@ -5,7 +5,6 @@ import { NoteSchema } from "~/entities"
 
 import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
-import { createImageUrl } from "~/lib/s3"
 
 export const headers: HeadersFunction = () => {
   return { "Cache-Control": "max-age=300, s-maxage=3600" }

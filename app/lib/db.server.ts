@@ -1,6 +1,7 @@
 import { RequestContext } from '@mikro-orm/core'
-import options from '~/mikro-orm.config'
-// this is needed because in development we don't want to restart
-// the server with every change, but we want to make sure we don't
-// create a new connection to the DB with every change either.
-export const getEntityManager=RequestContext.getEntityManager;
+
+export const getEntityManager=(name?:string)=>{
+	const em=RequestContext.getEntityManager(name);
+	if(!em) throw new Error(`RequestContext.getEntityManager`);
+	return em;
+}

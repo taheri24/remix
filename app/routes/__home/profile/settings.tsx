@@ -18,6 +18,7 @@ import { Form } from "@remix-run/react"
 import { Tile, TileBody, TileFooter, TileHeader, TileHeading } from "~/components/Tile"
 import { getEntityManager } from "~/lib/db.server"
 import { getCurrentUser, requireUser } from "~/services/auth/auth.server"
+import { UserSchema } from "~/entities"
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUser(request)
@@ -25,7 +26,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 export const action: ActionFunction = async ({ request }) => {
   const user = await getCurrentUser(request)
-  await db.user.delete({ where: { id: user.id } })
+  const em=getEntityManager();
+  await  em.nativeDelete(UserSchema.name ,user.id);
   return redirect("/")
 }
 

@@ -22,7 +22,7 @@ export const action: ActionFunction = async ({ request }) => {
   const { data, fieldErrors } = await validateFormData(postSchema, formData)
   const user = await getCurrentUser(request)
   if (fieldErrors) return badRequest({ fieldErrors, data })
-  const post = await db.post.create({ data: { ...data, author: { connect: { id: user.id } } } })
+   const post = await db.post.create({ data: { ...data, author: { connect: { id: user.id } } } })
   return redirect(`/admin/posts/${post.id}`)
 }
 

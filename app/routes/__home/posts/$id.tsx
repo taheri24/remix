@@ -12,7 +12,6 @@ const getPost = async (id?: string) => {
   if (!id) throw new Response("ID required", { status: 400 });
   const em=getEntityManager();
   const post = await em?.findOneOrFail<INote>(NoteSchema,+id )
-
   if (!post) throw new Response("Not Found", { status: 404 })
   return { post }
 }
