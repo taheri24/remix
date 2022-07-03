@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client"
 
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 
 export const updateUser = async (id: string, data: Prisma.UserUpdateInput) => {
   if (data.email) {

@@ -10,7 +10,7 @@ import { PartialCheckIcon } from "~/components/PartialCheckIcon"
 import { Search } from "~/components/Search"
 import { Column, Table } from "~/components/Table"
 import { Tile } from "~/components/Tile"
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { getTableParams, TableParams } from "~/lib/table"
 

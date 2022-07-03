@@ -16,7 +16,7 @@ import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node"
 import { Form } from "@remix-run/react"
 
 import { Tile, TileBody, TileFooter, TileHeader, TileHeading } from "~/components/Tile"
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { getCurrentUser, requireUser } from "~/services/auth/auth.server"
 
 export const loader: LoaderFunction = async ({ request }) => {

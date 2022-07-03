@@ -8,7 +8,7 @@ import { LinkButton } from "~/components/LinkButton"
 import { Search } from "~/components/Search"
 import { Column, Table } from "~/components/Table"
 import { Tile } from "~/components/Tile"
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { getTableParams, TableParams } from "~/lib/table"
 
@@ -47,7 +47,9 @@ type LoaderData = AwaitedFunction<typeof getPosts>
 type Post = LoaderData["posts"][0]
 
 export default function Posts() {
-  const { posts, count } = useLoaderData<LoaderData>()
+  const ld = useLoaderData<LoaderData>();
+ console.log('ld>>>',ld);
+  const { posts, count }=ld;
   return (
     <c.Stack spacing={4}>
       <c.Flex justify="space-between">

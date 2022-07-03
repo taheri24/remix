@@ -3,17 +3,15 @@ import { createRequestHandler } from "@remix-run/express"
 import express from "express"
 import morgan from "morgan"
 import path from "path"
-import { getMikroORMOptionsByDatabaseURL } from "./helpers/cfg"
-const options=require(process.env.MIKRO_ORM_CONFIG || '')
-const {DATABASE_URL}=process.env;
-const mikroORMOptions={
-	...getMikroORMOptionsByDatabaseURL(DATABASE_URL),
+const mikroORMOptions = require(process.env.MIKRO_ORM_CONFIG || '').default;
 
-}
+console.log('mikroORMOptions>>>', mikroORMOptions, process.env.MIKRO_ORM_CONFIG)
 const app = express()
-app.use(async (req, res, next) => {
-	const orm = await MikroORM.init(options);
-	const em=RequestContext.getEntityManager( );
+let orm: any = null;
+MikroORM.init(mikroORMOptions).then(o => orm = o);
+app.use(async (req, res, next:any) => {
+	 RequestContext.create(orm.em, next);
+
 });
 app.use((req, res, next) => {
 	// helpful headers:

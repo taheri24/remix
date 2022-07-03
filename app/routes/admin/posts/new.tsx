@@ -7,7 +7,7 @@ import { z } from "zod"
 
 import { Form, FormError, FormField } from "~/components/Form"
 import { Tile, TileBody, TileFooter, TileHeader, TileHeading } from "~/components/Tile"
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { validateFormData } from "~/lib/form"
 import { badRequest } from "~/lib/remix"
 import { getCurrentUser } from "~/services/auth/auth.server"

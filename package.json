@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "boilerplate-remix",
+  "module": "node16",
   "description": "",
   "license": "",
   "mikro-orm": {
@@ -13,12 +14,13 @@
   },
   "scripts": {
     "dev": "run-p dev:*",
+	"dev:build:mikroorm": "esbuild --platform=node --external:@mikro-orm/* --format=cjs ./app/mikro-orm.config.ts --bundle  --outfile=build/orm.js",
     "dev:build": "cross-env NODE_ENV=development npm run build:server -- --watch",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
-    "dev:server": "cross-env NODE_ENV=development node --inspect --require ./node_modules/dotenv/config ./build/server.js",
+	"dev:server": "cross-env NODE_ENV=development node --inspect --require ./node_modules/dotenv/config ./build/server.js",
     "build:remix": "remix build",
     "build:server": "esbuild --platform=node --format=cjs ./app/lib/server.ts --outdir=build",
-	"build:mikroorm": "esbuild --platform=node --external:@mikro-orm/* --format=cjs ./app/entities/index.ts --bundle  --outfile=build/entities.js",
+	"build:mikroorm": "esbuild --platform=node --external:@mikro-orm/* --format=cjs ./app/mikro-orm.config.ts --bundle  --outfile=build/orm.js",
 
     "build": "run-s build:*",
     "lint:fix": "eslint --config .eslintrc.commit.js --fix --cache --ext .ts,.tsx app",
@@ -28,9 +30,7 @@
     "start": "cross-env NODE_ENV=production node ./build/server.js",
     "typecheck": "tsc --noEmit"
   },
-  "prisma": {
-    "schema": "./prisma/schema.prisma"
-  },
+
   "lint-staged": {
     "*.(ts|tsx)": [
       "eslint --fix --config .eslintrc.commit.js"

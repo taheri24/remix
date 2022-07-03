@@ -1,8 +1,9 @@
 import * as c from "@chakra-ui/react"
 import { HeadersFunction, json,LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { NoteSchema } from "~/entities"
 
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { createImageUrl } from "~/lib/s3"
 
@@ -12,10 +13,8 @@ export const headers: HeadersFunction = () => {
 
 const getPost = async (id?: string) => {
   if (!id) throw new Response("ID required", { status: 400 })
-  const post = await db.post.findUnique({
-    where: { id },
-    select: { id: true, title: true, type: true, description: true, author: true },
-  })
+  const em=getEntityManager();
+  const post = await em?.findOne(NoteSchema,+id);
   if (!post) throw new Response("Not Found", { status: 404 })
   return { post }
 }
@@ -39,9 +38,7 @@ export default function PostDetail() {
           </c.HStack>
           <c.Text>{post.description}</c.Text>
         </c.Stack>
-        {post.author.avatar && (
-          <c.Avatar size="xl" src={createImageUrl(post.author.avatar)} name={post.author.firstName} />
-        )}
+
       </c.Flex>
     </c.Box>
   )

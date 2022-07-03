@@ -2,12 +2,13 @@ import { Avatar, Box, Flex, Heading, Stack, Text } from "@chakra-ui/react"
 import { json,LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { createImageUrl } from "~/lib/s3"
 
 const getUser = async (id?: string) => {
-  if (!id) throw new Response("ID required", { status: 400 })
+  if (!id) throw new Response("ID required", { status: 400 });
+  const em=getEntityManager();
   const user = await db.user.findUnique({
     where: { id },
     select: { id: true, avatar: true, firstName: true, email: true },

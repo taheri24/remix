@@ -1,24 +1,18 @@
 import * as c from "@chakra-ui/react"
 import { json,LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { INote, NoteSchema } from "~/entities"
 
-import { db } from "~/lib/db.server"
+import { getEntityManager } from "~/lib/db.server"
 import { useLoaderHeaders } from "~/lib/headers"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { createImageUrl } from "~/lib/s3"
 
 const getPost = async (id?: string) => {
-  if (!id) throw new Response("ID required", { status: 400 })
-  const post = await db.post.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      title: true,
-      type: true,
-      description: true,
-      author: { select: { firstName: true, avatar: true } },
-    },
-  })
+  if (!id) throw new Response("ID required", { status: 400 });
+  const em=getEntityManager();
+  const post = await em?.findOneOrFail<INote>(NoteSchema,+id )
+
   if (!post) throw new Response("Not Found", { status: 404 })
   return { post }
 }
@@ -45,12 +39,7 @@ export default function PostDetail() {
       <c.Stack>
         <c.Text>{post.description}</c.Text>
       </c.Stack>
-      {post.author.avatar && (
-        <c.HStack>
-          <c.Avatar size="sm" src={createImageUrl(post.author.avatar)} name={post.author.firstName} />
-          <c.Text>{post.author.firstName}</c.Text>
-        </c.HStack>
-      )}
+
     </c.Stack>
   )
 }

@@ -1,17 +1,27 @@
 import 'reflect-metadata'
-import { MikroORM } from '@mikro-orm/core';
+import { JavaScriptMetadataProvider, MikroORM } from '@mikro-orm/core';
 import { MySqlDriver } from '@mikro-orm/mysql';
 
 import { Options } from '@mikro-orm/core';
 import * as entities from '~/entities'
-const options:Options=   ({
+const {DATABASE_URL}=process.env;
+export function getMikroORMOptionsByDatabaseURL(url:string|undefined): Options{
+	const dbURL=new URL(url||'');
+	return {
+		dbName:dbURL.pathname.replace('/',''),
+		host:dbURL.hostname,
+		port:+dbURL.port,
+		user:dbURL.username,
+		password:dbURL.password,
+
+	}
+}
+const options:Options=    {
 	entities:Object.values(entities) as any,
-	type: "mysql",
-	dbName: 'remix',
-	host: 'localhost',
-	user: 'root',
-	password: "123456",
-	port: 3306,
-});
+	type:'mysql',
+	...getMikroORMOptionsByDatabaseURL(DATABASE_URL),
+	debug:true,
+
+} ;
 
 export default options;
