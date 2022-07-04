@@ -1,4 +1,4 @@
-import { Entity, EntitySchema, Enum, PrimaryKey, Property } from '@mikro-orm/core';
+import {   EntitySchema  } from '~/lib/db.server';
 import { v4 } from 'uuid';
 
 

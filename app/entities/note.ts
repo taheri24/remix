@@ -1,4 +1,4 @@
-import { Entity, EntitySchema  } from '@mikro-orm/core';
+import {   EntitySchema  } from '~/lib/db.server';
 import { IUser, UserSchema } from './user'
 export interface INote  {
 	id: number;

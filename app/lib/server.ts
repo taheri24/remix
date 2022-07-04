@@ -5,7 +5,7 @@ import morgan from "morgan"
 import path from "path"
 const mikroORMOptions = require(process.env.MIKRO_ORM_CONFIG || '').default;
 
-console.log('mikroORMOptions>>>', mikroORMOptions, process.env.MIKRO_ORM_CONFIG)
+
 const app = express()
 let orm: any = null;
 MikroORM.init(mikroORMOptions).then(o => orm = o);

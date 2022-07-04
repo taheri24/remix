@@ -27,11 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 const POST_TYPE_OPTIONS: { label: string; value: PostType }[] = [
-  { value: PostType.FUNNY, label: "Funny" },
-  { value: PostType.SERIOUS, label: "Serious" },
-  { value: PostType.NEWS, label: "News" },
-  { value: PostType.RANDOM, label: "Random" },
-  { value: PostType.TECH, label: "Tech" },
+
 ]
 
 export default function NewPost() {

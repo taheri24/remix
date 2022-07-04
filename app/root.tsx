@@ -6,10 +6,15 @@ import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch }
 
 import { ClientStyleContext, ServerStyleContext } from "~/lib/emotion/context"
 import { theme } from "~/lib/theme"
-
+import styles from "~/styles/app.css"
+export function links() {
+	console.log({styles});
+	return [{ rel: "stylesheet", href: styles }]
+  }
 export const meta: MetaFunction = () => {
   return { title: "Boilerplate" }
 }
+
 
 export default function App() {
   return (
@@ -83,7 +88,7 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
   }, [])
 
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
