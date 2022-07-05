@@ -1,29 +1,13 @@
 import * as React from "react"
 import * as c from "@chakra-ui/react"
-import type { FormProps as RemixFormProps } from "@remix-run/react"
-import { Form as RemixForm, useActionData, useTransition } from "@remix-run/react"
 
+import {   useActionData, useTransition } from "@remix-run/react"
 import type { ActionData } from "~/lib/form"
 import { createImageUrl } from "~/lib/s3"
 
 import { ImageUploader } from "./ImageUploader"
 
-export const Form = React.forwardRef(function _Form(
-  props: Omit<c.BoxProps, "onChange"> & RemixFormProps,
-  ref: React.ForwardedRef<HTMLFormElement> | null,
-) {
-  return (
-    <c.Box
-      as={RemixForm}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ref={ref}
-      {...props}
-    >
-      {props.children}
-    </c.Box>
-  )
-})
+export {Form} from '@remix-run/react'
 
 interface FormFieldProps extends Omit<c.InputProps, "defaultValue"> {
   name: string

@@ -1,9 +1,8 @@
-import * as c from "@chakra-ui/react"
-
-export function ButtonGroup(props: c.ButtonGroupProps) {
+import React from 'react'
+export function ButtonGroup(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <c.ButtonGroup spacing={4} display="flex" justifyContent="flex-end" alignItems="center" {...props}>
+    <div className="btn-group" {...props}>
       {props.children}
-    </c.ButtonGroup>
+    </div>
   )
 }

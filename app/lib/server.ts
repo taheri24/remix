@@ -3,14 +3,19 @@ import { createRequestHandler } from "@remix-run/express"
 import express from "express"
 import morgan from "morgan"
 import path from "path"
-const mikroORMOptions = require(process.env.MIKRO_ORM_CONFIG || '').default;
+const { MIKRO_ORM_FILE,NODE_ENV } = process.env;
+if (!MIKRO_ORM_FILE) {
+	throw new Error("MIKRO_ORM_FILE not set")
+}
+const mikroORMmod = require(MIKRO_ORM_FILE);
+const [mikroORMOptions] = [mikroORMmod.default, mikroORMmod].filter(Boolean);
 
 
 const app = express()
 let orm: any = null;
 MikroORM.init(mikroORMOptions).then(o => orm = o);
-app.use(async (req, res, next:any) => {
-	 RequestContext.create(orm.em, next);
+app.use(async (req, res, next: any) => {
+	RequestContext.create(orm.em, next);
 
 });
 app.use((req, res, next) => {
@@ -69,18 +74,17 @@ app.use(express.static("public", { maxAge: "1h" }) as any)
 
 app.use(morgan("tiny") as any)
 
-const MODE = process.env.NODE_ENV
 const BUILD_DIR = path.join(process.cwd(), "build")
 
 app.all(
 	"*",
-	MODE === "production"
+	NODE_ENV === "production"
 		? createRequestHandler({ build: require(BUILD_DIR) }) as any
 		: (...args) => {
 			purgeRequireCache()
 			const requestHandler: any = createRequestHandler({
 				build: require(BUILD_DIR),
-				mode: MODE,
+				mode: NODE_ENV,
 			})
 			return requestHandler(...args)
 		},

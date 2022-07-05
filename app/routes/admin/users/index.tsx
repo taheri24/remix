@@ -1,7 +1,7 @@
 import * as React from "react"
 import { CgSoftwareDownload, CgUserAdd } from "react-icons/cg"
 import * as c from "@chakra-ui/react"
-import { Prisma } from "@prisma/client"
+
 import { json,LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import dayjs from "dayjs"
@@ -13,29 +13,20 @@ import { Tile } from "~/components/Tile"
 import { getEntityManager } from "~/lib/db.server"
 import { AwaitedFunction } from "~/lib/helpers/types"
 import { getTableParams, TableParams } from "~/lib/table"
+import { UserSchema } from "~/entities"
 
 const getUsers = async ({ search, ...tableParams }: TableParams) => {
-  const users = await db.user.findMany({
-    ...tableParams,
-    where: search
-      ? {
-          OR: [
-            { firstName: { contains: search, mode: Prisma.QueryMode.insensitive } },
-            { lastName: { contains: search, mode: Prisma.QueryMode.insensitive } },
-            { email: { contains: search, mode: Prisma.QueryMode.insensitive } },
-          ],
-        }
-      : undefined,
-    select: { id: true, firstName: true, lastName: true, email: true, createdAt: true },
-  })
-  const count = await db.user.count()
+	const em=getEntityManager();
+  const [users,count] = await em.findAndCount(UserSchema,{},{orderBy:{
+	id:'DESC'
+  }} )
   return { users, count }
 }
 
 const TAKE = 10
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const data = await getUsers(getTableParams(request, TAKE, { createdAt: Prisma.SortOrder.desc }))
+  const data = await getUsers(getTableParams(request, TAKE, { createdAt:  }))
   return json(data)
 }
 

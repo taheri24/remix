@@ -1,14 +1,11 @@
 import * as React from "react"
-import * as c from "@chakra-ui/react"
-import { withEmotionCache } from "@emotion/react"
+
 import { MetaFunction } from "@remix-run/node"
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from "@remix-run/react"
 
-import { ClientStyleContext, ServerStyleContext } from "~/lib/emotion/context"
-import { theme } from "~/lib/theme"
+
 import styles from "~/styles/app.css"
 export function links() {
-	console.log({styles});
 	return [{ rel: "stylesheet", href: styles }]
   }
 export const meta: MetaFunction = () => {
@@ -25,15 +22,16 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.error("Boundary:", error)
-  return (
+   return (
     <Document>
-      <c.VStack h="100vh" justify="center">
-        <c.Heading>There was an error</c.Heading>
-        <c.Text>{error.message}</c.Text>
+      <div className="h-full-screen min-h-screen  text-current content-center">
+        <h1  className="leading-3">There was an error</h1>
+        <div className="text-lg">{error.message}</div>
         <hr />
-        <c.Text>Hey, developer, you should replace this with what you want your users to see.</c.Text>
-      </c.VStack>
+        <div >Hey, developer,
+			you should replace this with what you want your users to see.
+			</div>
+      </div>
     </Document>
   )
 }
@@ -43,10 +41,12 @@ export function CatchBoundary() {
   let message
   switch (caught.status) {
     case 401:
-      message = <c.Text>Oops! Looks like you tried to visit a page that you do not have access to.</c.Text>
+      message = <div className="leading-5">Oops! Looks like you tried to visit a page that
+	  you do not have access to.</div>
       break
     case 404:
-      message = <c.Text>Oops! Looks like you tried to visit a page that does not exist.</c.Text>
+      message = <div className="leading-5">Oops! Looks like you tried to visit a page
+		that does not exist.</div>
       break
 
     default:
@@ -55,12 +55,12 @@ export function CatchBoundary() {
 
   return (
     <Document>
-      <c.VStack h="100vh" justify="center">
-        <c.Heading>
+      <div className="h-full-screen min-h-screen ">
+        <h3 className="leading-3">
           {caught.status}: {caught.statusText}
-        </c.Heading>
+        </h3>
         {message}
-      </c.VStack>
+      </div>
     </Document>
   )
 }
@@ -69,23 +69,8 @@ interface DocumentProps {
   children: React.ReactNode
 }
 
-const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) => {
-  const serverSyleData = React.useContext(ServerStyleContext)
-  const clientStyleData = React.useContext(ClientStyleContext)
+const Document = (({ children }: DocumentProps) => {
 
-  // Only executed on client
-  React.useEffect(() => {
-    // re-link sheet container
-    emotionCache.sheet.container = document.head
-    // re-inject tags
-    const tags = emotionCache.sheet.tags
-    emotionCache.sheet.flush()
-    tags.forEach((tag) => {
-      ;(emotionCache.sheet as any)._insertTag(tag)
-    })
-    // reset cache to reapply global styles
-    clientStyleData?.reset()
-  }, [])
 
   return (
     <html lang="en" data-theme="dark">
@@ -100,16 +85,10 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
         />
         <Meta />
         <Links />
-        {serverSyleData?.map(({ key, ids, css }) => (
-          <style
-            key={key}
-            data-emotion={`${key} ${ids.join(" ")}`}
-            dangerouslySetInnerHTML={{ __html: css }}
-          />
-        ))}
+
       </head>
       <body>
-        <c.ChakraProvider theme={theme}>{children}</c.ChakraProvider>
+		 {children}
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" ? <LiveReload /> : null}

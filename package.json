@@ -41,13 +41,6 @@
     ]
   },
   "dependencies": {
-    "@airtasker/spot": "^1.9.0",
-    "@chakra-ui/react": "1.8.8",
-    "@emotion/cache": "11.7.1",
-    "@emotion/react": "11.9.0",
-    "@emotion/server": "11.4.0",
-    "@emotion/styled": "11.8.1",
-    "@mikro-orm/better-sqlite": "^5.2.0",
     "@mikro-orm/core": "^5.2.0",
     "@mikro-orm/entity-generator": "^5.2.0",
     "@mikro-orm/mariadb": "^5.2.0",
