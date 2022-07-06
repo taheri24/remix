@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as c from "@chakra-ui/react"
+
 import { PostType } from "@prisma/client"
 import { ActionFunction, redirect } from "@remix-run/node"
 import { useTransition } from "@remix-run/react"
@@ -11,6 +11,7 @@ import { getEntityManager } from "~/lib/db.server"
 import { validateFormData } from "~/lib/form"
 import { badRequest } from "~/lib/remix"
 import { getCurrentUser } from "~/services/auth/auth.server"
+import { NoteSchema } from "~/entities"
 
 export const action: ActionFunction = async ({ request }) => {
   const postSchema = z.object({
@@ -20,10 +21,11 @@ export const action: ActionFunction = async ({ request }) => {
   })
   const formData = await request.formData()
   const { data, fieldErrors } = await validateFormData(postSchema, formData)
-  const user = await getCurrentUser(request)
-  if (fieldErrors) return badRequest({ fieldErrors, data })
-   const post = await db.post.create({ data: { ...data, author: { connect: { id: user.id } } } })
-  return redirect(`/admin/posts/${post.id}`)
+   if (fieldErrors) return badRequest({ fieldErrors, data })
+  const em=getEntityManager();
+  const freshPost=em.create(NoteSchema,data as any);
+  await em.persistAndFlush(freshPost);
+  return redirect(`/admin/posts/${freshPost.id}`)
 }
 
 const POST_TYPE_OPTIONS: { label: string; value: PostType }[] = [

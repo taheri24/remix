@@ -1,6 +1,6 @@
 import * as React from "react"
 import { CgClose, CgSearch } from "react-icons/cg"
-import * as c from "@chakra-ui/react"
+
 import { useSearchParams } from "@remix-run/react"
 
 interface Props extends c.BoxProps {

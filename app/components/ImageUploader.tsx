@@ -1,6 +1,6 @@
 import * as React from "react"
 import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone"
-import * as c from "@chakra-ui/react"
+
 
 import { useS3Upload } from "~/lib/hooks/useS3"
 import { useToast } from "~/lib/hooks/useToast"

@@ -1,4 +1,4 @@
-import * as c from "@chakra-ui/react"
+
 
 interface Props extends c.ModalProps {
   title?: string

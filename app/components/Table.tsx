@@ -1,6 +1,6 @@
 import * as React from "react"
 import { CgArrowLongDown, CgArrowLongUp } from "react-icons/cg"
-import * as c from "@chakra-ui/react"
+
 
 import { Link as RLink, useSearchParams } from "@remix-run/react"
 

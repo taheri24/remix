@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Heading, Stack, Text } from "@chakra-ui/react"
+
 import { json, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { UserSchema } from "~/entities"

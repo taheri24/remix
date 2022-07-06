@@ -1,6 +1,6 @@
 import * as React from "react"
 import { CgSoftwareDownload, CgUserAdd } from "react-icons/cg"
-import * as c from "@chakra-ui/react"
+
 
 import { json,LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"

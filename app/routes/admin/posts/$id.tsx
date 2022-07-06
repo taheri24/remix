@@ -1,4 +1,4 @@
-import * as c from "@chakra-ui/react"
+
 import { HeadersFunction, json,LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { NoteSchema } from "~/entities"

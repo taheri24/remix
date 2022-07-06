@@ -1,4 +1,4 @@
-import * as c from "@chakra-ui/react"
+
 import { Prisma } from "@prisma/client"
 import { json, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"

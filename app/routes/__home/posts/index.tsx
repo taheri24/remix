@@ -1,5 +1,5 @@
-import * as c from "@chakra-ui/react"
-import { Avatar } from "@chakra-ui/react"
+
+
 import { MikroORM } from "@mikro-orm/core"
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node"
 import { Link, useLoaderData } from "@remix-run/react"
